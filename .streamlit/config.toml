@@ -1,0 +1,23 @@
+[theme]
+
+base = "dark"  # Use light theme as the base
+
+# Primary colors
+primaryColor = "#007bff"
+primaryColorVariant = "#0062cc"
+secondaryColor = "#f8f9fa"
+secondaryColorVariant = "#e7e9ec"
+
+# Text colors
+textColor = "#fff"
+inverseTextColor = "#fff"
+
+# Background colors
+backgroundColor = "#212529"
+bodyBackgroundColor = "#343A40"
+
+# Border colors
+borderColor = "#e7e9ec"
+
+# Other UI elements
+menuBackgroundColor = "#f8f9fa"

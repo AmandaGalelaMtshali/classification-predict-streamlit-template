@@ -31,7 +31,7 @@ import matplotlib.pyplot as plt
 from streamlit_option_menu import option_menu
 from wordcloud import WordCloud
 # Vectorizer
-news_vectorizer = open("resources/vector.pkl","rb")
+news_vectorizer = open("resources/vector3.pkl","rb")
 tweet_cv = joblib.load(news_vectorizer) # loading your vectorizer from the pkl file
 
 # Load your raw data
@@ -49,20 +49,56 @@ def main():
 	# Creating sidebar with selection box -
 	# you can create multiple pages this way
 	with st.sidebar:
-		selection = option_menu("Main Menu", ["Prediction", "Information", "Development team"], 
-        icons=['house', 'pie-chart', 'people-fill', 'envelope'], menu_icon="cast", default_index=1)
+		selection = option_menu("Main Menu", ["Model", "Data", "Development team"], 
+        icons=['house', 'pie-chart', 'people-fill', 'envelope'], menu_icon="cast", default_index=0)
 	#options = ["Prediction", "Information", "Development team"]
 	#selection = st.sidebar.selectbox("Choose Option", options)
 
 	# Building out the "Information" page
-	if selection == "Information":
+
+
+
+
+
+	if selection == "Data":
 		st.info("General Information")
 		# You can read a markdown file from supporting resources folder
 		st.markdown("Some information here")
 
 		st.subheader("Raw Twitter data and label")
 		if st.checkbox('Show raw data'): # data is hidden if box is unchecked
-			st.write(raw[['sentiment', 'message']]) # will write the df to the page
+			
+			st.write(raw[['sentiment', 'message']].head()) # will write the df to the page
+
+			opt = st.radio('Plot  type:',['Bar', 'Pie', 'Word Cloud'])
+			if opt=='Bar':
+				st.markdown('<h3>Show sentiment occurance dataset</h3>',unsafe_allow_html=True)
+				xx = raw['sentiment'].value_counts()
+				st.bar_chart(xx)
+			elif opt =="Pie":
+				st.markdown('<h3>Pie chart for percentage of each sentiment on dataset</h3>',unsafe_allow_html=True)
+				fig1, ax1 = plt.subplots()
+				ax1.pie(raw['sentiment'].value_counts(),labels = ["Pro","News","Neutral","Anti"], autopct='%1.1f%%',shadow=True, startangle=90)
+				ax1.axis('equal')
+				ax1.set_facecolor("black")  # Equal aspect ratio ensures that pie is drawn as a circle.
+				ax1.legend()
+				fig1.patch.set_alpha(0)
+				ax1.xaxis.label.set_color('red')
+				st.pyplot(fig1)
+				
+		
+			else:
+				st.set_option('deprecation.showPyplotGlobalUse', False)
+				st.markdown('<h3>Word Cloud for how frequently words show up on all tweets.</h3>',unsafe_allow_html=True)
+				allwords = ' '.join([msg for msg in raw['message']])
+				WordCloudtest = WordCloud(width = 800, height=500, random_state = 21 , max_font_size =119).generate(allwords)
+				
+				plt.imshow(WordCloudtest, interpolation = 'bilinear')
+				
+				plt.axis('off')
+				st.pyplot(plt.show())
+
+
 
 	if selection == "Development team":
 		st.title("Meet our team")
@@ -73,6 +109,7 @@ def main():
 			st.write("Nontokozo Ndlovu has worked as a Project Manager, Product Manager, Systems and Production developer. When she is not coding he enjoys watching sport on television.")
 		with col1:
 			st.image('nonto.jpg', width=380)
+
 		col1, mid, col2 = st.columns([80,10,80])
 		with col1:
 			st.subheader("Siyabonga Mkhize - Data Scienstist")
@@ -85,11 +122,11 @@ def main():
 		with col2:
 			st.subheader("Amanda Mtshali- Machine learning engineer")
 			st.write("She has designed predicted models for companies such as FNB and BMW. One of my project was creating a chatbot with Python's NTLK library.She is a fitness fanatic and loves dancing ")
-		with col2:
+		with col1:
 			st.image('anele.jpg', width=380)
 
 		col1, mid, col2 = st.columns([80,10,80])
-		with col2:
+		with col1:
 			st.subheader("Tamika Gavington- Machine learning engineer")
 			st.write("She has designed predicted models for companies such as FNB and BMW. One of my project was creating a chatbot with Python's NTLK library.She is a fitness fanatic and loves dancing ")
 		with col2:
@@ -99,14 +136,15 @@ def main():
 		with col2:
 			st.subheader("Saneliswa Ndlovu- Machine learning engineer")
 			st.write("She has designed predicted models for companies such as FNB and BMW. One of my project was creating a chatbot with Python's NTLK library.She is a fitness fanatic and loves dancing ")
-		with col2:
+		with col1:
 			st.image('anele.jpg', width=380)
 
 
 	# Building out the predication page
-	if selection == "Prediction":
+	if selection == "Model":
 		st.info("Prediction with ML Models")
 		# Creating a text box for user input
+		model_type = st.radio('Model  type:',['Logistic Regression', 'SVC'])
 		tweet_text = st.text_area("Enter Text","Type Here")
 
 		if st.button("Classify"):
@@ -114,7 +152,10 @@ def main():
 			vect_text = tweet_cv.transform([tweet_text]).toarray()
 			# Load your .pkl file with the model of your choice + make predictions
 			# Try loading in multiple models to give the user a choice
-			predictor = joblib.load(open(os.path.join("resources/mlr_model.pkl"),"rb"))
+			if model_type=='Logistic Regression':
+				predictor = joblib.load(open(os.path.join("resources/model_logistic.pkl"),"rb"))
+			elif model_type=='SVC':
+				predictor = joblib.load(open(os.path.join("resources/model_svc.pkl"),"rb"))
 			prediction = predictor.predict(vect_text)
 
 			# When model has successfully run, will print prediction
