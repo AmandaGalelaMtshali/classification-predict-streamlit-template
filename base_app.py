@@ -130,14 +130,14 @@ def main():
 			st.subheader("Tamika Gavington- Machine learning engineer")
 			st.write("She has designed predicted models for companies such as FNB and BMW. One of my project was creating a chatbot with Python's NTLK library.She is a fitness fanatic and loves dancing ")
 		with col2:
-			st.image('anele.jpg', width=380)
+			st.image('tamika.jpg', width=380)
 
 		col1, mid, col2 = st.columns([80,10,80])
 		with col2:
 			st.subheader("Saneliswa Ndlovu- Machine learning engineer")
 			st.write("She has designed predicted models for companies such as FNB and BMW. One of my project was creating a chatbot with Python's NTLK library.She is a fitness fanatic and loves dancing ")
 		with col1:
-			st.image('anele.jpg', width=380)
+			st.image('sanelisiwe.jpg', width=380)
 
 
 	# Building out the predication page
