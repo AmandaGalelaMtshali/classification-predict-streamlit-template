@@ -39,8 +39,9 @@ raw = pd.read_csv("resources/train.csv")
 
 
 
-
+logo_image = "resources/imgs/logo1.png"
 # The main function where we will build the actual app
+st.sidebar.image(logo_image, width=200)
 def main():
 	"""Tweet Classifier App with Streamlit """
 
@@ -53,7 +54,7 @@ def main():
 	# Creating sidebar with selection box -
 	# you can create multiple pages this way
 	with st.sidebar:
-		selection = option_menu("Main Menu", ["Model", "Data", "Development team"], 
+		selection = option_menu("Main Menu", ["Model", "More Info", "Development team","How to Use"], 
         icons=['house', 'pie-chart', 'people-fill', 'envelope'], menu_icon="cast", default_index=0)
 	#options = ["Prediction", "Information", "Development team"]
 	#selection = st.sidebar.selectbox("Choose Option", options)
@@ -64,12 +65,26 @@ def main():
 
 
 
-	if selection == "Data":
-		st.info("General Information")
+	
+	if selection == "More Info":
+		st.subheader("About the App")
 		# You can read a markdown file from supporting resources folder
-		st.markdown("Some information here")
-
-		st.subheader("Raw Twitter data and label")
+	
+		st.markdown("Hello, welcome to our TwitterInsightify Classifier app! With companies striving to minimize their impact on nature, our app is designed to tackle a pressing issue – understanding public perceptions of climate change. Through the power of Machine Learning, we've created a tool that, in the future, will assist companies in grasping what people will think and feel about their products.")
+		st.markdown("By analyzing tweet data, our app provides insightful classifications, empowering businesses to tailor their strategies effectively. Join us as we explore the significance of this task, the data-driven approach we've taken, and the potential impact on shaping marketing strategies across diverse demographics and geographical regions. Let's navigate through the world of environmental consciousness together.")
+		
+		st.subheader("Different Sentiments")
+		mycol1,mycol3 = st.columns(2)
+		with mycol1:
+			st.success("2")
+			st.info("1")
+			st.warning("0")
+			st.error("-1")
+		with mycol3:
+			st.markdown("News: the tweet links to factual news about climate change")
+			st.markdown("Pro: the tweet supports the belief of man-made climate change")
+			st.markdown("Neutral: the tweet neither supports nor refutes the belief of man-made climate change")
+			st.markdown("Anti: the tweet does not believe in man-made climate change")
 		if st.checkbox('Show raw data'): # data is hidden if box is unchecked
 			
 			st.write(raw[['sentiment', 'message']].head()) # will write the df to the page
@@ -181,6 +196,15 @@ def main():
 			prediction_dic =  {-1:"Anti: the tweet does not believe in man-made climate change", 0:"Neutral: the tweet neither supports nor refutes the belief of man-made climate change",
 			1:"Pro: the tweet supports the belief of man-made climate change", 2:"News: the tweet links to factual news about climate change"}
 			st.success("Text Categorized as: {}".format(prediction_dic[prediction[0]]))
+
+		# Building the "How to Use" page
+	if selection == "How to Use":
+		st.subheader("Follow these easy steps:")
+		st.write("Step 1: We have options on the left")
+		st.write("Step 2: Choose the 'Prediction' option")
+		st.write("Step 3: Then choose a model from the available choices")
+		st.write("Step 4: Enter a tweet in the text area")
+		st.write("Step 5: Click Classify!")
 
 # Required to let Streamlit instantiate our web app.  
 if __name__ == '__main__':
