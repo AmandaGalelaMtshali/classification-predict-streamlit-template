@@ -154,7 +154,7 @@ def main():
 	if selection == "Model":
 		st.info("Prediction with ML Models")
 		# Creating a text box for user input
-		model_type = st.radio('Model  type:',['Logistic Regression', 'SVC','Logistic Reg 2','Logistics Reg 3','K Nearbour',])
+		model_type = st.radio('Model  type:',['Logistic Regression', 'LR-L1/L2 Penalty','LR-lbfgs olver'])
 		tweet_text = st.text_area("Enter Text","Type Here")
 
 		if st.button("Classify"):
@@ -164,14 +164,12 @@ def main():
 			# Try loading in multiple models to give the user a choice
 			if model_type=='Logistic Regression':
 				predictor = joblib.load(open(os.path.join("resources/model_logistic.pkl"),"rb"))
-			elif model_type=='SVC':
-				predictor = joblib.load(open(os.path.join("resources/model_svc.pkl"),"rb"))
-			elif model_type=='Logistic Reg 2':
+
+			elif model_type=='LR-L1/L2 Penalty':
 				predictor = joblib.load(open(os.path.join("resources/model_linear_2.pkl"),"rb"))
-			elif model_type=='Logistics Reg 3':
+			elif model_type=='LR-lbfgs olver':
 				predictor = joblib.load(open(os.path.join("resources/model_linear_3.pkl"),"rb"))
-			elif model_type=='K Nearbour':
-				predictor = joblib.load(open(os.path.join("resources/model_kn.pkl"),"rb"))
+
 
 				
 			prediction = predictor.predict(vect_text)
