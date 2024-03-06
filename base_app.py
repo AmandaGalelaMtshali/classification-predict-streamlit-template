@@ -37,12 +37,16 @@ tweet_cv = joblib.load(news_vectorizer) # loading your vectorizer from the pkl f
 # Load your raw data
 raw = pd.read_csv("resources/train.csv")
 
+
+
+
 # The main function where we will build the actual app
 def main():
 	"""Tweet Classifier App with Streamlit """
 
 	# Creates a main title and subheader on your page -
 	# these are static across all pages
+
 	st.title("Tweet Classifer")
 	st.subheader("Climate change tweet classification")
 
@@ -103,48 +107,54 @@ def main():
 	if selection == "Development team":
 		st.title("Meet our team")
 		st.title("")
-		col1, mid, col2 = st.columns([80,10,80])
+		st.divider()
+		col1, mid, col2 = st.columns([80,20,80])
 		with col2:
 			st.subheader("Nontokozo Ndlovu - Lead Engineer")
 			st.write("Nontokozo Ndlovu has worked as a Project Manager, Product Manager, Systems and Production developer. When she is not coding he enjoys watching sport on television.")
 		with col1:
 			st.image('nonto.jpg', width=380)
-
-		col1, mid, col2 = st.columns([80,10,80])
+			
+		st.divider()
+		col1, mid, col2 = st.columns([80,20,80])
 		with col1:
 			st.subheader("Siyabonga Mkhize - Data Scienstist")
 			st.write("Siyabonga has worked as a data scientist for various companies including Netflix and Apple to name a few. In his spare time he likes to spend time with family and watch football")
 		with col2:
-			st.image('anele.jpg', width=380)		
+			st.image('sya.jpg', width=300)		
 
-
-		col1, mid, col2 = st.columns([80,10,80])
+		st.divider()
+		col1, mid, col2 = st.columns([80,20,80])
 		with col2:
 			st.subheader("Amanda Mtshali- Machine learning engineer")
 			st.write("She has designed predicted models for companies such as FNB and BMW. One of my project was creating a chatbot with Python's NTLK library.She is a fitness fanatic and loves dancing ")
 		with col1:
 			st.image('anele.jpg', width=380)
 
-		col1, mid, col2 = st.columns([80,10,80])
+		st.divider()
+
+		col1, mid, col2 = st.columns([80,20,80])
 		with col1:
 			st.subheader("Tamika Gavington- Machine learning engineer")
 			st.write("She has designed predicted models for companies such as FNB and BMW. One of my project was creating a chatbot with Python's NTLK library.She is a fitness fanatic and loves dancing ")
 		with col2:
-			st.image('tamika.jpg', width=380)
+			st.image('tamika.jpg', width=300)
+		
+		st.divider()
 
-		col1, mid, col2 = st.columns([80,10,80])
+		col1, mid, col2 = st.columns([80,20,80])
 		with col2:
 			st.subheader("Saneliswa Ndlovu- Machine learning engineer")
-			st.write("She has designed predicted models for companies such as FNB and BMW. One of my project was creating a chatbot with Python's NTLK library.She is a fitness fanatic and loves dancing ")
+			st.write("Saneliswa Ndlovu brings a unique blend of technical expertise to the table. As a machine learning engineer, she excels at designing and implementing predictive models. Beyond web development, Saneliswa is a creative writer who enjoys expressing herself through storytelling.")
 		with col1:
-			st.image('sanelisiwe.jpg', width=380)
+			st.image('sanelisiwe.jpg', width=300)
 
 
 	# Building out the predication page
 	if selection == "Model":
 		st.info("Prediction with ML Models")
 		# Creating a text box for user input
-		model_type = st.radio('Model  type:',['Logistic Regression', 'SVC'])
+		model_type = st.radio('Model  type:',['Logistic Regression', 'SVC','Logistic Reg 2','Logistics Reg 3','K Nearbour',])
 		tweet_text = st.text_area("Enter Text","Type Here")
 
 		if st.button("Classify"):
@@ -156,6 +166,14 @@ def main():
 				predictor = joblib.load(open(os.path.join("resources/model_logistic.pkl"),"rb"))
 			elif model_type=='SVC':
 				predictor = joblib.load(open(os.path.join("resources/model_svc.pkl"),"rb"))
+			elif model_type=='Logistic Reg 2':
+				predictor = joblib.load(open(os.path.join("resources/model_linear_2.pkl"),"rb"))
+			elif model_type=='Logistics Reg 3':
+				predictor = joblib.load(open(os.path.join("resources/model_linear_3.pkl"),"rb"))
+			elif model_type=='K Nearbour':
+				predictor = joblib.load(open(os.path.join("resources/model_kn.pkl"),"rb"))
+
+				
 			prediction = predictor.predict(vect_text)
 
 			# When model has successfully run, will print prediction
